@@ -1,33 +1,31 @@
 # -*- coding: UTF-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 import os, os.path
 
 from skimage import data, color
 from skimage.transform import hough_circle, hough_circle_peaks, warp_polar
-from skimage.feature import canny
+from skimage.feature import canny, graycomatrix
 from skimage.draw import circle_perimeter
 from skimage.util import img_as_ubyte
 from PIL import Image
 from pathlib import Path
 from skimage.color import rgb2gray
+from sklearn.decomposition import PCA
 
 class Iris:
     def __init__(self):
         #####
+        matplotlib.use('Agg')
         pass
 
     def process_data(self):
         base_path = Path(__file__)
         path = (base_path / "../MMU-Iris-Database/").resolve()
-        #self.prepare_image("C:\\Users\\Dell Francois 2\\Desktop\\Projet en informatique\\iris-biometric-project\\Source Code\\MMU-Iris-Database\\037\\right\\003.bmp")
         for f in os.listdir(path):
             for c in os.listdir(os.path.join(path, f)):
                 for i in os.listdir(os.path.join(path, f, c)):
-                    #print(os.path.join(path, f, c, i))
-                    #ext = os.path.splitext(i)[1]
-                    #if ext.lower() != ".bmp":
-                    #    continue
                     self.process_image(os.path.join(path, f, c, i))
 
     def process_image(self, file_path):
@@ -78,3 +76,29 @@ class Iris:
         if not os.path.exists(new_file_path.rsplit('\\',1)[0]):
             os.makedirs(new_file_path.rsplit('\\',1)[0])
         Image.fromarray((np.array(cropped_warped_image) * 255).astype(np.uint8)).save(new_file_path)
+
+
+    def create_glcm(self):
+        base_path = Path(__file__)
+        path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
+        for f in os.listdir(path):
+            for c in os.listdir(os.path.join(path, f)):
+                for i in os.listdir(os.path.join(path, f, c)):
+                    self.glcm(os.path.join(path, f, c, i))
+
+
+    def glcm(self, file_path):
+        image = np.array(Image.open(file_path), dtype=np.uint8)
+        image = rgb2gray(image)
+        image = Image.fromarray((image * 255).astype(np.uint8))
+        image = np.array(image, dtype=np.uint8)
+        glcm = graycomatrix(image, distances=[5], angles=[0], levels=256)
+        np.set_printoptions(threshold=np.inf)
+        #print(glcm[:, :, 0, 0])
+        self.pca(glcm[:, :, 0, 0])
+
+    def pca(self, glcm):
+        pca = PCA(n_components=2)
+        pca.fit(glcm)
+        #print(pca.explained_variance_ratio_)
+        #print(pca.singular_values_)

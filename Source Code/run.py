@@ -9,6 +9,7 @@ if __name__ == '__main__':
     #test1.find_iris_loop() 
     #test1.iris_detection() 
     iris = Iris()
-    iris.process_data()
+    #iris.process_data()
+    iris.create_glcm()
 
     pass
