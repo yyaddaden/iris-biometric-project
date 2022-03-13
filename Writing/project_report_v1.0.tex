@@ -29,6 +29,58 @@
 \section{Introduction}
 \cite{ref_01}
 
+\section{Système biométrique basé sur l’iris de l’œil}
+
+\subsection{Base de données d’iris}
+Le choix de la base de données d’iris est très important. La qualité des images peut influencer l’analyse des images. Il existe plusieurs bases de données disponibles sur internet.
+\\~\\
+Les éléments pouvant influencer la qualité des images sont les suivants :
+\begin{itemize}
+    \item Les sources de lumière
+    \item Lentilles
+    \item Capteur
+    \item Unité de contrôle
+\end{itemize}
+\ \\~\\
+La base de données utilisée pour ce projet est « MMU iris dataset ». La base de données de « Multimedia University » (MMU1) est une base de données publique composée d'images d'oeil pour l'entraînement de modèles de système biométrique basé sur l'iris de l'oeil. Cet ensemble de données se compose de 5 images de l'iris gauche et droit de 46 personnes, pour un total de 460 images avec quelques fichiers vides.
+
+\subsection{Pré-traitement}
+Ce processus consiste à enlever certains artefacts contenus dans les images d’origine, afin d’augmenter la précision de la reconnaissance de l’iris. Parmi les traitements pour retirer ces artefacts, on retrouve la suppression du bruit, la suppression du flou, la suppression des reflets, l’étirement du contraste, la suppression de l’occlusion des cils et la correction de l'angle du regard. Dans le pré-traitement, on doit aussi convertir les images couleurs en gris.
+
+
+\subsection{Segmentation}
+La segmentation de l’iris consiste à la détection de toutes les frontières de l’iris et de la pupille. C’est l’extraction de la région d’intérêt. Les techniques « Edge detection » et « Hough Transform » sont très populaires pour la segmentation de l’iris. 
+\\~\\
+Pour ce projet, j'ai utilisé la technique « Hough Transform ». « Hough Transform » dans sa forme la plus simple est une méthode pour détecter des lignes droites, mais elle peut également être utilisée pour détecter des cercles ou des ellipses. Pour détecter un cercle, on fournit un intervalle de rayons plausibles. Pour chaque rayon, des cercles sont extraits et on garde seulement les meilleurs candidats.
+
+\subsection{Normalisation}
+La normalisation consiste à transformer l’iris circulaire en rectangle pour faciliter l’extraction des caractéristiques. « Daugman’s Rubber Sheet Model » est une méthode de normalisation utilisée pour la reconnaissance de l’iris.
+
+\subsection{Extraction des caractéristiques}
+L’extraction des caractéristiques consiste à représenter les caractéristiques de texture, afin de différencier les iris durant le processus de classification.
+
+\subsubsection{GLCM}
+Pour l’extraction des caractéristiques de l’iris, on peut utiliser la méthode GLCM (Gray-Level Co-occurrence Matrix). GLCM est une méthode statistique de second ordre pour l'analyse de texture. Les caractéristiques qui résultent des statistiques au premier ordre renseignent sur la répartition des niveaux de gris de l'image. Cependant, ils n'incluent aucune information sur les positions relatives des différents gris au sein de l'image. Les statistiques de second ordre sont utilisées pour fournir ces informations, où les pixels sont pris en compte par paires. Les statistiques du deuxième ordre et des ordres supérieurs prédisent deux valeurs de pixel ou plus l'une de l'autre à des emplacements particuliers. Les matrices de cooccurrence de niveau de gris sont des exemples de caractéristiques de second ordre de texture statique. La matrice décrit le nombre d’occurrences d’une paire (I, J) où I est le niveau de gris d’un pixel et J est le niveau de gris d’un pixel distants ou décalés de l’autre pixel (situé à 0°, 45°, 90° ou 135° du premier). Le nombre d’occurrences sera situé à la case (I, J) de la matrice GLCM.
+\\~\\
+De nombreuses caractéristiques de texture peuvent être identifiées à partir de la matrice GLCM. En voici quelques-unes:
+\begin{itemize}
+    \item \textbf{Contraste}: Évalue la variation locale du niveau de gris dans les valeurs d'intensité des pixels
+    \item \textbf{Énergie}: Le nombre de paires répétées est calculé. L'énergie doit être élevée si les paires de pixels répétées sont élevées.
+    \item \textbf{Entropie}: Décrit le degré de hasard nécessaire à la compression d'image.
+    \item \textbf{Homogénéité}: Teste si les paires de pixels sont homogènes. L'homogénéité est supposée être élevée si les valeurs des pixels de chaque paire de pixels sont identiques.
+    \item \textbf{Corrélation}: Fournit une connexion dans la paire de pixels entre les deux pixels. La corrélation est supposée être vitale si les niveaux de gris des paires de pixels sont fortement corrélés.
+\end{itemize}
+\citep{ref_02}
+
+\subsubsection{PCA}
+La réduction de la dimensionnalité consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement. L'analyse en composantes principales (PCA) est de loin l'algorithme de réduction de dimensionnalité le plus populaire. Cet algorithme identifie d'abord l'hyperplan le plus proche des données, puis projette les données sur celui-ci. Avant de pouvoir projeter les données sur l’hyperplan de dimension inférieure, on doit choisir le bon hyperplan. On doit donc choisir le bon axe avant de faire la projection des données. Dépendamment de l’axe choisi sur l’hyperplan, on peut conserver le plus possible la variance ou seulement la conserver faiblement. En conservant le plus la variance, on perdra le moins d’informations possible. L’objectif du PCA sera donc de conserver le plus de variance pour garder le plus d’informations possible. Le PCA identifiera l’axe qui représente la plus grande quantité de variance dans l'ensemble d'apprentissage. Ensuite, il trouvera l’axe qui représente la plus grande quantité de variance restante et ainsi de suite. Il trouvera autant d’axes que le nombre de dimensions de l’ensemble de données. Donc, pour deux dimensions, il identifiera 2 axes.
+\citep{ref_03}
+
+\subsection{Processus de correspondance}
+Le processus de correspondance est la dernière étape du système de reconnaissance. Il consiste à trouver le degré de similarité entre une image test et une image dans la base de données. Il permet de détecter si la personne est dans la base de données ou si c’est un imposteur.
+
+\section{Conclusion}
+
 \newpage
 \bibliography{project_report_v1.0}
 
