@@ -17,7 +17,7 @@ from sklearn.decomposition import PCA
 class Iris:
     def __init__(self):
         #####
-        matplotlib.use('Agg')
+        #matplotlib.use('Agg')
         pass
 
     def process_data(self):
@@ -93,12 +93,15 @@ class Iris:
         image = Image.fromarray((image * 255).astype(np.uint8))
         image = np.array(image, dtype=np.uint8)
         glcm = graycomatrix(image, distances=[5], angles=[0], levels=256)
-        np.set_printoptions(threshold=np.inf)
-        #print(glcm[:, :, 0, 0])
-        self.pca(glcm[:, :, 0, 0])
+        glcm_1D = glcm[:, :, 0, 0].flatten()
+
+        #plt.imshow(glcm[:, :, 0, 0])
+        #plt.show()
+
+        self.pca(glcm_1D)
 
     def pca(self, glcm):
-        pca = PCA(n_components=2)
+        pca = PCA()
         pca.fit(glcm)
-        #print(pca.explained_variance_ratio_)
-        #print(pca.singular_values_)
+        print(pca.explained_variance_ratio_)
+        print(pca.singular_values_)
