@@ -52,10 +52,12 @@ Ce processus consiste à enlever certains artefacts contenus dans les images d�
 \subsection{Segmentation}
 La segmentation de l’iris consiste à la détection de toutes les frontières de l’iris et de la pupille. C’est l’extraction de la région d’intérêt. Les techniques « Edge detection » et « Hough Transform » sont très populaires pour la segmentation de l’iris. 
 \\~\\
-Pour ce projet, j'ai utilisé la technique « Hough Transform ». « Hough Transform » dans sa forme la plus simple est une méthode pour détecter des lignes droites, mais elle peut également être utilisée pour détecter des cercles ou des ellipses. Pour détecter un cercle, on fournit un intervalle de rayons plausibles. Pour chaque rayon, des cercles sont extraits et on garde seulement les meilleurs candidats.\cite{ref_04}
+Pour ce projet, j'ai utilisé la technique « Hough Transform » de « scikit-image ». « Hough Transform » dans sa forme la plus simple est une méthode pour détecter des lignes droites, mais elle peut également être utilisée pour détecter des cercles ou des ellipses. Pour détecter un cercle, on fournit un intervalle de rayons plausibles. Pour chaque rayon, des cercles sont extraits et on garde seulement les meilleurs candidats.\cite{ref_04}
 
 \subsection{Normalisation}
 La normalisation consiste à transformer l’iris circulaire en rectangle pour faciliter l’extraction des caractéristiques. « Daugman’s Rubber Sheet Model » est une méthode de normalisation utilisée pour la reconnaissance de l’iris.\cite{ref_01}\cite{ref_06}
+\\~\\
+Pour ce projet, j'ai utilisé la méthode « Warp Polar » de « scikit-image » pour transformer l'iris détecté à l'étape précédente en rectangle. Ensuite, j'ai retiré la partie noire (la pupille) de l'image rectangulaire. Pour ce faire, j'ai retiré toutes les lignes de l'image qui contenait 50\% ou plus de pixel avec des valeurs inférieures à (45, 45, 45).
 
 \subsection{Extraction des caractéristiques}
 L’extraction des caractéristiques consiste à représenter les caractéristiques de texture, afin de différencier les iris durant le processus de classification.\cite{ref_01}\cite{ref_06}
@@ -71,18 +73,21 @@ De nombreuses caractéristiques de texture peuvent être identifiées à partir 
     \item \textbf{Homogénéité}: Teste si les paires de pixels sont homogènes. L'homogénéité est supposée être élevée si les valeurs des pixels de chaque paire de pixels sont identiques.
     \item \textbf{Corrélation}: Fournit une connexion dans la paire de pixels entre les deux pixels. La corrélation est supposée être vitale si les niveaux de gris des paires de pixels sont fortement corrélés.
 \end{itemize}
-\citep{ref_02}
+\cite{ref_02}
 \\~\\
-Voici le résultat de la matrice GLCM de l'iris d'un oeil:
+Pour ce projet, j'ai utilisé la méthode « GLCM » de « scikit-image » pour créer la matrice GLCM à partir de l'image de l'iris.
+\\~\\
+Voici un exemple de résultat de la matrice GLCM de l'iris d'un oeil:
 
 \begin{center}
     \includegraphics[width = 12cm]{glcm}
 \end{center}
 
-
 \subsubsection{PCA}
 La réduction de la dimensionnalité consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement. L'analyse en composantes principales (PCA) est de loin l'algorithme de réduction de dimensionnalité le plus populaire. Cet algorithme identifie d'abord l'hyperplan le plus proche des données, puis projette les données sur celui-ci. Avant de pouvoir projeter les données sur l’hyperplan de dimension inférieure, on doit choisir le bon hyperplan. On doit donc choisir le bon axe avant de faire la projection des données. Dépendamment de l’axe choisi sur l’hyperplan, on peut conserver le plus possible la variance ou seulement la conserver faiblement. En conservant le plus la variance, on perdra le moins d’informations possible. L’objectif du PCA sera donc de conserver le plus de variance pour garder le plus d’informations possible. Le PCA identifiera l’axe qui représente la plus grande quantité de variance dans l'ensemble d'apprentissage. Ensuite, il trouvera l’axe qui représente la plus grande quantité de variance restante et ainsi de suite. Il trouvera autant d’axes que le nombre de dimensions de l’ensemble de données. Donc, pour deux dimensions, il identifiera 2 axes.
-\citep{ref_03}
+\cite{ref_03}
+\\~\\
+Pour ce projet, j'ai transformé la matrice 2D GLCM en un vecteur 1D grâce à la méthode « flatten » de « numpy ». Ensuite, j'ai appliqué la méthode « PCA » de « scikit-learn ».
 
 \subsection{Processus de correspondance}
 Le processus de correspondance est la dernière étape du système de reconnaissance. Il consiste à trouver le degré de similarité entre une image test et une image dans la base de données. Il permet de détecter si la personne est dans la base de données ou si c’est un imposteur.\cite{ref_01}\cite{ref_06}
