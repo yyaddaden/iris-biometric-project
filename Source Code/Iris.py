@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import os, os.path
+import csv
 
 from skimage import data, color
 from skimage.transform import hough_circle, hough_circle_peaks, warp_polar
@@ -81,10 +82,22 @@ class Iris:
     def create_glcm(self):
         base_path = Path(__file__)
         path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
+
+        features = []
+
         for f in os.listdir(path):
             for c in os.listdir(os.path.join(path, f)):
                 for i in os.listdir(os.path.join(path, f, c)):
-                    self.glcm(os.path.join(path, f, c, i))
+                    features.append(self.glcm(os.path.join(path, f, c, i)))
+
+        self.pca(features)
+
+        with open('glcm.csv', 'w', encoding='UTF8', newline='') as f:
+            # create the csv writer
+            writer = csv.writer(f)
+            for row in features:
+                # write a row to the csv file
+                writer.writerow(row)
 
 
     def glcm(self, file_path):
@@ -98,10 +111,16 @@ class Iris:
         #plt.imshow(glcm[:, :, 0, 0])
         #plt.show()
 
-        self.pca(glcm_1D)
+        return glcm_1D.tolist()
 
-    def pca(self, glcm):
+    def pca(self, features):
         pca = PCA()
-        pca.fit(glcm)
-        print(pca.explained_variance_ratio_)
-        print(pca.singular_values_)
+        pca.fit(features)
+        #print(pca.explained_variance_ratio_)
+        #print(pca.singular_values_)
+
+    def classification(self, data):
+        # X, y ?
+        knn = KNeighborsClassifier(n_neighbors=3)
+        scores = cross_val_score(knn, X, y, cv=10)
+        print(scores)
