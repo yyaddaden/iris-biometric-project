@@ -1,0 +1,63 @@
+\documentclass[25pt,margin=1in,innermargin=-4.5in,blockverticalspace=-0.25in]{tikzposter}
+\geometry{paperwidth=42in,paperheight=36in}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{enumitem}
+\usepackage{xcolor}
+%\usepackage[backend=biber,style=numeric]{biblatex}
+\usepackage{unitartu-theme}
+
+\usepackage{mwe} % for placeholder images
+
+\usepackage{caption}
+\usepackage{anyfontsize}
+
+%\addbibresource{refs.bib}
+
+% set theme parameters
+\tikzposterlatexaffectionproofoff
+\usetheme{UniTartuTheme}
+\usecolorstyle{UniTartuStyle}
+
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault} 
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\Tr}{\text{Tr}}
+\usepackage[T1]{fontenc}
+
+\input{poster_info}
+
+\titlegraphic{\includegraphics[scale=0.65]{logo_fi3e.png}}
+
+% begin document
+\begin{document}
+\maketitle
+\centering
+
+\begin{columns}
+    \column{0.32}
+	\input{poster_column_1}
+	
+	\column{0.36}
+	\input{poster_column_2}
+ 
+    \column{0.32}
+    \input{poster_column_3}
+    
+    \block{Références}{
+        \vspace{-3em}
+		\bibliographystyle{plain}
+		\renewcommand\refname{}
+		\bibliography{fi3e_poster_refs}
+    }
+\end{columns}
+
+\end{document}
