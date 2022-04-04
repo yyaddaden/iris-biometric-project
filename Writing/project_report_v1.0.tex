@@ -32,7 +32,7 @@ La sécurité informatique est un sujet qui est très d'actualité. Avec les nom
 
 \section{Système biométrique basé sur l’iris de l’œil}
 
-Un système biométrique basé sur l'iris de l'oeil comporte plusieurs différentes étapes. Ce processus débute avec une base de données d'iris, ensuite, on procède au pré-traitement, à la segmentation, à la normalisation, à l'extraction des caractéristiques et on termine avec le processus de classification. 
+Un système biométrique basé sur l'iris de l'oeil comporte plusieurs différentes étapes. Ce processus débute avec une base de données d'iris, ensuite, on procède au pré-traitement, à l'extraction des caractéristiques, à la réduction de dimensionnalité et on termine avec le processus de classification. 
 
 \begin{center}
     \includegraphics[width = 14cm]{schema}
@@ -58,12 +58,12 @@ La base de données utilisée pour ce projet est « MMU iris dataset ». La base
 Ce processus consiste à enlever certains artefacts contenus dans les images d’origine, afin d’augmenter la précision de la reconnaissance de l’iris. Parmi les traitements pour retirer ces artefacts, on retrouve la suppression du bruit, la suppression du flou, la suppression des reflets, l’étirement du contraste, la suppression de l’occlusion des cils et la correction de l'angle du regard. Dans le pré-traitement, on doit aussi convertir les images couleurs en gris.\cite{ref_01}\cite{ref_06}
 
 
-\subsection{Segmentation}
+\subsubsection{Segmentation}
 La segmentation de l’iris consiste à la détection de toutes les frontières de l’iris et de la pupille. C’est l’extraction de la région d’intérêt. Les techniques « Edge detection » et « Hough Transform » sont très populaires pour la segmentation de l’iris. 
 \\~\\
 Pour ce projet, j'ai utilisé la technique « Hough Transform » de « scikit-image ». « Hough Transform » dans sa forme la plus simple est une méthode pour détecter des lignes droites, mais elle peut également être utilisée pour détecter des cercles ou des ellipses. Pour détecter un cercle, on fournit un intervalle de rayons plausibles. Pour chaque rayon, des cercles sont extraits et on garde seulement les meilleurs candidats.\cite{ref_04}
 
-\subsection{Normalisation}
+\subsubsection{Normalisation}
 La normalisation consiste à transformer l’iris circulaire en rectangle pour faciliter l’extraction des caractéristiques. « Daugman’s Rubber Sheet Model » est une méthode de normalisation utilisée pour la reconnaissance de l’iris.\cite{ref_01}\cite{ref_06}
 \\~\\
 Pour ce projet, j'ai utilisé la méthode « Warp Polar » de « scikit-image » pour transformer l'iris détecté à l'étape précédente en rectangle. Ensuite, j'ai retiré la partie noire (la pupille) de l'image rectangulaire. Pour ce faire, j'ai retiré toutes les lignes de l'image qui contenait 50\% ou plus de pixel avec des valeurs inférieures à (45, 45, 45).
@@ -92,8 +92,11 @@ Voici un exemple de résultat de la matrice GLCM de l'iris d'un oeil:
     \includegraphics[width = 12cm]{glcm}
 \end{center}
 
+\subsection{Réduction de la dimensionnalité}
+La réduction de la dimensionnalité est un processus qui consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement. La PCA est une technique qui permet de réduire la dimensionnalité.
+
 \subsubsection{PCA}
-La réduction de la dimensionnalité consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement. L'analyse en composantes principales (PCA) est de loin l'algorithme de réduction de dimensionnalité le plus populaire. Cet algorithme identifie d'abord l'hyperplan le plus proche des données, puis projette les données sur celui-ci. Avant de pouvoir projeter les données sur l’hyperplan de dimension inférieure, on doit choisir le bon hyperplan. On doit donc choisir le bon axe avant de faire la projection des données. Dépendamment de l’axe choisi sur l’hyperplan, on peut conserver le plus possible la variance ou seulement la conserver faiblement. En conservant le plus la variance, on perdra le moins d’informations possible. L’objectif du PCA sera donc de conserver le plus de variance pour garder le plus d’informations possible. Le PCA identifiera l’axe qui représente la plus grande quantité de variance dans l'ensemble d'apprentissage. Ensuite, il trouvera l’axe qui représente la plus grande quantité de variance restante et ainsi de suite. Il trouvera autant d’axes que le nombre de dimensions de l’ensemble de données. Donc, pour deux dimensions, il identifiera 2 axes.
+L'analyse en composantes principales (PCA) est de loin l'algorithme de réduction de dimensionnalité le plus populaire. Cet algorithme identifie d'abord l'hyperplan le plus proche des données, puis projette les données sur celui-ci. Avant de pouvoir projeter les données sur l’hyperplan de dimension inférieure, on doit choisir le bon hyperplan. On doit donc choisir le bon axe avant de faire la projection des données. Dépendamment de l’axe choisi sur l’hyperplan, on peut conserver le plus possible la variance ou seulement la conserver faiblement. En conservant le plus la variance, on perdra le moins d’informations possible. L’objectif du PCA sera donc de conserver le plus de variance pour garder le plus d’informations possible. Le PCA identifiera l’axe qui représente la plus grande quantité de variance dans l'ensemble d'apprentissage. Ensuite, il trouvera l’axe qui représente la plus grande quantité de variance restante et ainsi de suite. Il trouvera autant d’axes que le nombre de dimensions de l’ensemble de données. Donc, pour deux dimensions, il identifiera 2 axes.
 \cite{ref_03}
 \\~\\
 Pour ce projet, j'ai transformé chaque matrice 2D GLCM de chaque iris en un vecteur 1D grâce à la méthode « flatten » de « numpy ». Par la suite, j'ai ajouté tous les vecteurs 1D à un tableau.  Ensuite, j'ai appliqué la méthode « PCA » de « scikit-learn » sur le tableau de vecteurs.

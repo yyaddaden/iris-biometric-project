@@ -86,31 +86,44 @@ class Iris:
         path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
 
         GLCMs_1D = []
+        Labels = []
 
         for f in os.listdir(path):
             for c in os.listdir(os.path.join(path, f)):
                 for i in os.listdir(os.path.join(path, f, c)):
                     GLCMs_1D.append(self.glcm(os.path.join(path, f, c, i)))
+                    Labels.append(f)
 
         PCA = []
-        PCA = self.pca(GLCMs_1D)
+        PCA = self.pca(GLCMs_1D, min(len(GLCMs_1D), len(GLCMs_1D[0])))
 
-        self.classification(PCA)
+        self.classification(PCA, Labels)
 
-        #number_of_file = int(len(PCA)/50)
+        #number_of_file = 9
 
         #for i in range(number_of_file):
-        #    PCA_components = [[]]*450
-        #    index = 0
-        #    for j in PCA:
-        #        PCA_components[index] = list(j[(i*50):][:50])
-        #        PCA_components[index].append(int(index/10))
-        #        index += 1
-
+        #    PCA_components = []
+        #    header = []
+        #    n_components=(i+1)*50
+        #    PCA_components = self.pca(GLCMs_1D, n_components)
+        #
+        #    for j in range(len(PCA_components[0])):
+        #        header.append("C" + str(j))
+        #
+        #    header.append("ID")
+        #
+        #    PCA_components_labels = [[]]*len(PCA_components)
+        #
+        #    for j in range(len(PCA_components)):
+        #        PCA_components_labels[j] = np.append(PCA_components[j], Labels[j]).tolist()
+        #
         #    with open('glcm' + str(i) + '.csv', 'w', encoding='UTF8', newline='') as f:
         #        # create the csv writer
         #        writer = csv.writer(f)
-        #        for row in PCA_components:
+        #
+        #        writer.writerow(header) 
+        #
+        #        for row in PCA_components_labels:
         #            # write a row to the csv file
         #            writer.writerow(row)                
 
@@ -120,7 +133,8 @@ class Iris:
         image = rgb2gray(image)
         image = Image.fromarray((image * 255).astype(np.uint8))
         image = np.array(image, dtype=np.uint8)
-        glcm = graycomatrix(image, distances=[5], angles=[0], levels=256)
+        #glcm = graycomatrix(image, distances=[5], angles=[0], levels=256)
+        glcm = graycomatrix(image, distances=[10], angles=[0], levels=256)
         glcm_1D = glcm[:, :, 0, 0].flatten()
 
         #plt.imshow(glcm[:, :, 0, 0])
@@ -128,30 +142,33 @@ class Iris:
 
         return glcm_1D.tolist()
 
-    def pca(self, GLCMs_1D):
-        pca = PCA(n_components=(min(len(GLCMs_1D), len(GLCMs_1D[0]))))
-        pca.fit(GLCMs_1D)
-        return pca.components_
+    def pca(self, GLCMs_1D, number_of_components):
+        pca = PCA(n_components=number_of_components)
+        return pca.fit_transform(GLCMs_1D)
 
-    def classification(self, data):
+    def classification(self, data, labels):
         X = data
-        y = []*450
+        y = np.array(labels)
 
-        for i in range(45):
-            for j in range(10):
-                y.append(i)
-
-        y = np.array(y)
-
-        knn = KNeighborsClassifier(n_neighbors=3)
+        # p=1 for manhattan distance
+        knn = KNeighborsClassifier(n_neighbors=2, weights='distance', p=1)
         
         skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=10)
         k_folds = skf.split(X, y)
+
+        n = 0
+        score_sum = 0
 
         for train_index, test_index in k_folds:
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
             knn.fit(X_train, y_train)
-            print(y_test)
-            print(knn.predict(X_test))
+            #print(y_test)
+            #print(knn.predict(X_test))
+            #print(knn.score(X_test, y_test))
+            score_sum += knn.score(X_test, y_test)
+            n += 1
+
+        print(score_sum/n)
+            
 
