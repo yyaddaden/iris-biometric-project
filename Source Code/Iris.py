@@ -7,7 +7,7 @@ import csv
 
 from skimage import data, color
 from skimage.transform import hough_circle, hough_circle_peaks, warp_polar
-from skimage.feature import canny, graycomatrix
+from skimage.feature import canny, graycomatrix, graycoprops
 from skimage.draw import circle_perimeter
 from skimage.util import img_as_ubyte
 from PIL import Image
@@ -171,4 +171,42 @@ class Iris:
 
         print(score_sum/n)
             
+    def glcm_features(self):
+        base_path = Path(__file__)
+        path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
 
+        GLCM_features = [[]]
+        index = 1
+
+        GLCM_features[0] = ["contrast", "dissimilarity", "homogeneity", "energy", "correlation", "ASM", "ID"]
+
+        for f in os.listdir(path):
+            for c in os.listdir(os.path.join(path, f)):
+                for i in os.listdir(os.path.join(path, f, c)):
+                    image = np.array(Image.open(os.path.join(path, f, c, i)), dtype=np.uint8)
+                    image = rgb2gray(image)
+                    image = Image.fromarray((image * 255).astype(np.uint8))
+                    image = np.array(image, dtype=np.uint8)
+                    glcm = graycomatrix(image, distances=[10], angles=[0], levels=256)
+
+                    GLCM_features.append([])
+
+                    GLCM_features[index].append(graycoprops(glcm, 'contrast')[0][0])
+                    GLCM_features[index].append(graycoprops(glcm, 'dissimilarity')[0][0])
+                    GLCM_features[index].append(graycoprops(glcm, 'homogeneity')[0][0])
+                    GLCM_features[index].append(graycoprops(glcm, 'energy')[0][0])
+                    GLCM_features[index].append(graycoprops(glcm, 'correlation')[0][0])
+                    GLCM_features[index].append(graycoprops(glcm, 'ASM')[0][0])
+                    GLCM_features[index].append(f)
+
+                    index += 1
+
+        with open('glcm_features.csv', 'w', encoding='UTF8', newline='') as f:
+                # create the csv writer
+                writer = csv.writer(f)
+        
+                for row in GLCM_features:
+                    # write a row to the csv file
+                    writer.writerow(row)       
+
+        
