@@ -85,47 +85,53 @@ class Iris:
         base_path = Path(__file__)
         path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
 
+        sample = ["005", "010", "013", "022", "027", "030", "032", "035", "038", "040"]
         GLCMs_1D = []
         Labels = []
 
         for f in os.listdir(path):
-            for c in os.listdir(os.path.join(path, f)):
-                for i in os.listdir(os.path.join(path, f, c)):
-                    GLCMs_1D.append(self.glcm(os.path.join(path, f, c, i)))
-                    Labels.append(f)
+            if f in sample:
+                for c in os.listdir(os.path.join(path, f)):
+                    for i in os.listdir(os.path.join(path, f, c)):
+                        GLCMs_1D.append(self.glcm(os.path.join(path, f, c, i)))
+                        Labels.append(f)
 
         PCA = []
         PCA = self.pca(GLCMs_1D, min(len(GLCMs_1D), len(GLCMs_1D[0])))
 
         self.classification(PCA, Labels)
 
-        #number_of_file = 9
+        #self.create_glcm_pca_csv(GLCMs_1D, Labels)
 
-        #for i in range(number_of_file):
-        #    PCA_components = []
-        #    header = []
-        #    n_components=(i+1)*50
-        #    PCA_components = self.pca(GLCMs_1D, n_components)
-        #
-        #    for j in range(len(PCA_components[0])):
-        #        header.append("C" + str(j))
-        #
-        #    header.append("ID")
-        #
-        #    PCA_components_labels = [[]]*len(PCA_components)
-        #
-        #    for j in range(len(PCA_components)):
-        #        PCA_components_labels[j] = np.append(PCA_components[j], Labels[j]).tolist()
-        #
-        #    with open('glcm' + str(i) + '.csv', 'w', encoding='UTF8', newline='') as f:
-        #        # create the csv writer
-        #        writer = csv.writer(f)
-        #
-        #        writer.writerow(header) 
-        #
-        #        for row in PCA_components_labels:
-        #            # write a row to the csv file
-        #            writer.writerow(row)                
+    
+    def create_glcm_pca_csv(self, GLCMs_1D, Labels):
+        number_of_file = 10
+
+        for i in range(number_of_file):
+            PCA_components = []
+            header = []
+            n_components=(i+1)*10
+            PCA_components = self.pca(GLCMs_1D, n_components)
+        
+            for j in range(len(PCA_components[0])):
+                header.append("C" + str(j))
+        
+            header.append("ID")
+        
+            PCA_components_labels = [[]]*len(PCA_components)
+        
+            for j in range(len(PCA_components)):
+                PCA_components_labels[j] = np.append(PCA_components[j], Labels[j]).tolist()
+        
+            with open('glcm-sample' + str(i) + '.csv', 'w', encoding='UTF8', newline='') as f:
+                # create the csv writer
+                writer = csv.writer(f)
+        
+                writer.writerow(header) 
+        
+                for row in PCA_components_labels:
+                    # write a row to the csv file
+                    writer.writerow(row)                
 
 
     def glcm(self, file_path):
@@ -175,33 +181,35 @@ class Iris:
         base_path = Path(__file__)
         path = (base_path / "../Prepared-MMU-Iris-Database/").resolve()
 
+        sample = ["005", "010", "013", "022", "027", "030", "032", "035", "038", "040"]
         GLCM_features = [[]]
         index = 1
 
         GLCM_features[0] = ["contrast", "dissimilarity", "homogeneity", "energy", "correlation", "ASM", "ID"]
 
         for f in os.listdir(path):
-            for c in os.listdir(os.path.join(path, f)):
-                for i in os.listdir(os.path.join(path, f, c)):
-                    image = np.array(Image.open(os.path.join(path, f, c, i)), dtype=np.uint8)
-                    image = rgb2gray(image)
-                    image = Image.fromarray((image * 255).astype(np.uint8))
-                    image = np.array(image, dtype=np.uint8)
-                    glcm = graycomatrix(image, distances=[10], angles=[0], levels=256)
+            if f in sample:
+                for c in os.listdir(os.path.join(path, f)):
+                    for i in os.listdir(os.path.join(path, f, c)):
+                        image = np.array(Image.open(os.path.join(path, f, c, i)), dtype=np.uint8)
+                        image = rgb2gray(image)
+                        image = Image.fromarray((image * 255).astype(np.uint8))
+                        image = np.array(image, dtype=np.uint8)
+                        glcm = graycomatrix(image, distances=[10], angles=[0], levels=256)
 
-                    GLCM_features.append([])
+                        GLCM_features.append([])
 
-                    GLCM_features[index].append(graycoprops(glcm, 'contrast')[0][0])
-                    GLCM_features[index].append(graycoprops(glcm, 'dissimilarity')[0][0])
-                    GLCM_features[index].append(graycoprops(glcm, 'homogeneity')[0][0])
-                    GLCM_features[index].append(graycoprops(glcm, 'energy')[0][0])
-                    GLCM_features[index].append(graycoprops(glcm, 'correlation')[0][0])
-                    GLCM_features[index].append(graycoprops(glcm, 'ASM')[0][0])
-                    GLCM_features[index].append(f)
+                        GLCM_features[index].append(graycoprops(glcm, 'contrast')[0][0])
+                        GLCM_features[index].append(graycoprops(glcm, 'dissimilarity')[0][0])
+                        GLCM_features[index].append(graycoprops(glcm, 'homogeneity')[0][0])
+                        GLCM_features[index].append(graycoprops(glcm, 'energy')[0][0])
+                        GLCM_features[index].append(graycoprops(glcm, 'correlation')[0][0])
+                        GLCM_features[index].append(graycoprops(glcm, 'ASM')[0][0])
+                        GLCM_features[index].append(f)
 
-                    index += 1
+                        index += 1
 
-        with open('glcm_features.csv', 'w', encoding='UTF8', newline='') as f:
+        with open('glcm_features_sample.csv', 'w', encoding='UTF8', newline='') as f:
                 # create the csv writer
                 writer = csv.writer(f)
         

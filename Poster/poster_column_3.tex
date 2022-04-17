@@ -1,16 +1,24 @@
+\block{Évaluation}{
+ 	{ \fontsize{40}{40}\selectfont 
+ 	
+	Les tests ont été faits avec un échantillon aléatoire de 10 personnes dans la base de données.
+	
+	}
+}
+
 \block{Résultats}{
  	{ \fontsize{40}{40}\selectfont 
  	
-    Texte ... 
+    Deux méthodes ont été testées pour identifier celle qui donne de meilleurs résultats.
     
 	\vspace{1em}
     \begin{center}
-		\captionof{table}{\selectfont Titre du tableau. }
+		\captionof{table}{\selectfont Comparaison des méthodes. }
 		{ \fontsize{25}{25}\selectfont 
     	\begin{tabular}{lcc}
         	Mesure 	& Tentative & Précision \\ \hline
-                 	&  			&  \\ \hline
-                 	&  			&  \\ \hline
+            GLCM-PCA-KNN     	&  			& 71\% \\ \hline
+            GLCM-KNN     	&  			& 22\% \\ \hline
     	\end{tabular}     		
     	}
     \end{center}
@@ -22,7 +30,7 @@
 \block{Conclusion}{
  	{ \fontsize{40}{40}\selectfont 
  	
-    Texte ... 
+    Après avoir testé les deux méthodes, on a pu conclure que le méthode GLCM-PCA-KNN est meilleure pour identifier les personnes à partir de l'iris. Pour obtenir de meilleurs résultats, on aurait pu améliorer le processus de pré-traitement pour mieux détecter l'iris dans l'image et pour retirer le bruit comme les cils.
     
     }
 }

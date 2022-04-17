@@ -12,7 +12,7 @@ if __name__ == '__main__':
     #iris.process_data()
     
     
-    #iris.create_glcm()
-    iris.glcm_features()
+    iris.create_glcm()
+    #iris.glcm_features()
 
     pass
