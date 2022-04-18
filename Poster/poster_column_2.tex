@@ -1,22 +1,8 @@
-\block{Description du Système}{
+\block{}{
  	{ \fontsize{40}{40}\selectfont 
- 	
-	Le système construit est composé de plusieurs étapes.
-
-    \vspace{1em}
-    \begin{center}
-        \includegraphics[width=0.9\linewidth]{schema}
-        \captionof{figure}{Schéma du système.}
-    \end{center}
-    \vspace{1em}
-    
-    \section{Base de données}
-    La base de donéees utilisée pour ce projet est « MMU iris dataset ». Elle est composée d’images d’oeil pour l’entraînement de modèles de système biométrique basé sur l’iris
-de l’oeil. Cet ensemble de données se compose de 5 images de l’iris gauche et droit de
-46 personnes.\cite{ref_2}
 
 	\section{Pré-traitement}
-	À cette étape, j'ai utilisé la méthode Hough Transform de scikit-image pour détecter l'iris dans les images. Ensuite, j'ai appliqué la technique « Warp Polar » de scikit-image pour transformer l'iris circulaire détecté en rectangle.\cite{ref_4} J'ai, par la suite, retiré la partie noire (la pupille) de l’image rectangulaire.
+	À cette étape, j'ai utilisé la méthode Hough Transform de scikit-image pour détecter l'iris dans les images. Ensuite, j'ai appliqué la technique Warp Polar de scikit-image pour transformer l'iris circulaire détecté en rectangle.\cite{ref_4} J'ai, par la suite, retiré la partie noire (la pupille) de l’image rectangulaire.
 	
 	
 	\section{Extraction des caractéristiques}
@@ -26,7 +12,7 @@ de l’oeil. Cet ensemble de données se compose de 5 images de l’iris gauche 
 	La réduction de la dimensionnalité est un processus qui consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement.\cite{ref_1} La méthode que j'ai utilisée est la PCA de scikit-learn.
 	
 	\section{Processus de classification}
-    Pour la classification, j'ai utilisée la validation croisée et k-NN. La validation croisée consiste à séparer les données en, par exemple, 10 sous-groupes aléatoires pour l’entraînement. Ensuite, on entraîne et évalue les données 10 fois en choisissant 9 des sous-groupes pour l’entraînement et le dernier pour l’évaluation.\cite{ref_1} La méthode des k voisins les plus proches (k-NN) consiste à trouver les k échantillons dont l’entrée est la plus proche d’une nouvelle entrée.
+    Pour la classification, j'ai utilisée la méthode k-NN. La méthode des k voisins les plus proches (k-NN) consiste à trouver les k échantillons dont l’entrée est la plus proche d’une nouvelle entrée.
     
     \vspace{1em}
     \begin{center}

@@ -1,7 +1,9 @@
 \block{Évaluation}{
  	{ \fontsize{40}{40}\selectfont 
  	
-	Les tests ont été faits avec un échantillon aléatoire de 10 personnes dans la base de données.
+ 	La base de donéees utilisée pour ce projet est « MMU iris dataset ». Elle est composée d’images d’oeil pour l’entraînement de modèles de système biométrique basé sur l’iris de l’oeil. Cet ensemble de données se compose de 5 images de l’iris gauche et droit de 46 personnes.\cite{ref_2} Les tests ont été faits avec un échantillon aléatoire de 10 personnes dans la base de données.
+\\~\\
+	J'ai utilisé la validation croisée comme stratégie d’évaluation. Elle consiste à séparer les données en, par exemple, 10 sous-groupes aléatoires pour l’entraînement. Ensuite, on entraîne et évalue les données 10 fois en choisissant 9 des sous-groupes pour l’entraînement et le dernier pour l’évaluation.\cite{ref_1} J'ai utilisé un k-fold = 10.
 	
 	}
 }
@@ -16,9 +18,9 @@
 		\captionof{table}{\selectfont Comparaison des méthodes. }
 		{ \fontsize{25}{25}\selectfont 
     	\begin{tabular}{lcc}
-        	Mesure 	& Tentative & Précision \\ \hline
-            GLCM-PCA-KNN     	&  			& 71\% \\ \hline
-            GLCM-KNN     	&  			& 22\% \\ \hline
+        	Méthode 	& Précision \\ \hline
+            GLCM-PCA-KNN     	& 71\% \\ \hline
+            GLCM-KNN     	& 22\% \\ \hline
     	\end{tabular}     		
     	}
     \end{center}
