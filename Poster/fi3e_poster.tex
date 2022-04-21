@@ -14,12 +14,14 @@
 \usepackage{xcolor}
 %\usepackage[backend=biber,style=numeric]{biblatex}
 \usepackage{unitartu-theme}
-\usepackage{url}
+\usepackage{hyperref}
 
 \usepackage{mwe} % for placeholder images
 
 \usepackage{caption}
 \usepackage{anyfontsize}
+
+\usepackage{multicol}
 
 %\addbibresource{refs.bib}
 
@@ -38,7 +40,6 @@
 
 \titlegraphic{\includegraphics[scale=0.45]{logo_uqar_fi3e.png}}
 
-% begin document
 \begin{document}
 \maketitle
 \centering
@@ -54,6 +55,7 @@
     \input{poster_column_3}
     
     \block{Références}{
+    \fontsize{25}{25}\selectfont 
         \vspace{-3em}
 	\bibliographystyle{plain}
 	\renewcommand\refname{}

@@ -1,25 +1,32 @@
 \block{}{
  	{ \fontsize{40}{40}\selectfont 
-
-	\section{Pré-traitement}
-	À cette étape, j'ai utilisé la méthode Hough Transform de scikit-image pour détecter l'iris dans les images. Ensuite, j'ai appliqué la technique Warp Polar de scikit-image pour transformer l'iris circulaire détecté en rectangle.\cite{ref_4} J'ai, par la suite, retiré la partie noire (la pupille) de l’image rectangulaire.
 	
-	
+	\vspace{-1em}
 	\section{Extraction des caractéristiques}
-	Pour l'extraction des caractéristiques, j'ai utilisé la méthode GLCM. Elle permet d'analyser les textures en calculant les répartitions des différents des niveaux de gris dans l'image en se basant sur les positions relatives des pixels. À partir de cette matrice, certaines caractéristiques de texture comme le contraste, l'énergie, l'homogénéité, etc. peuvent être identifiées.\cite{ref_5}
+	\vspace{-0.5em}
+	La \textbf{GLCM} (\textit{Gray-Level Co-occurrence Matrix}) ou matrice de co-occurrences a été proposée par Haralick et al. \cite{ref_03}. Elle permet d'analyser les textures en calculant les répartitions des différents des niveaux de gris dans l'image en se basant sur les positions relatives des pixels.\vspace{0.5em}  
+
+	Il est possible de l'utiliser directement et appliquer la \textit{réduction de dimensionnalité} ou bien extraire différentes caractéristiques comme le contraste, l'énergie, l'homogénéité, etc.
 	
-	\section{Réduction de la dimensionnalité}
-	La réduction de la dimensionnalité est un processus qui consiste à réduire considérablement le nombre de caractéristiques pour faciliter le processus d’entraînement.\cite{ref_1} La méthode que j'ai utilisée est la PCA de scikit-learn.
-	
-	\section{Processus de classification}
-    Pour la classification, j'ai utilisée la méthode k-NN. La méthode des k voisins les plus proches (k-NN) consiste à trouver les k échantillons dont l’entrée est la plus proche d’une nouvelle entrée.
-    
-    \vspace{1em}
     \begin{center}
-        \includegraphics[width=0.9\linewidth]{processus}
-        \captionof{figure}{Processus.}
+        \includegraphics[width=0.8\linewidth]{schema.pdf}
+        \vspace{0.3em}
+        \captionof{figure}{\label{fig_01}Les différents blocs du système biométrique.}
     \end{center}
-    \vspace{1em}
-    
+	
+	\vspace{-1em}
+	\section{Réduction de la dimensionnalité}
+	\vspace{-0.5em}
+	C'est un processus qui consiste à réduire considérablement la taille du vecteur de caractéristiques dans le but de faciliter le processus d'apprentissage.\vspace{0.5em}  
+	
+	La méthode utilisée est la \textbf{PCA} (\textit{Principal Component Analysi}s) ou l'analyse en composantes principales. Durant le processus de projection et transformation, seule l'information utile est conservée.
+	
+	\vspace{-1em}
+	\section{Processus de classification}
+	\vspace{-0.5em}
+	Une technique d'apprentissage machine \textit{supervisée} a été utilisée. C'est le $k$-\textbf{NN} ($k$-\textit{Nearest Neighbors}) ou la méthode des $k$ plus proches voisins. \vspace{0.5em}  
+	
+	Le $k$-\textbf{NN} consiste à trouver les $k$ échantillons à partir de la base de données de référence et qui se rapproche le plus de l'échantillon d'entrée. Le critère utilisé est la distance de \textit{Manhattan}. C'est sur la base d'un vote de majorité sur les $k$ échantillons que l'identité est déterminée.
+	
 	}
 }

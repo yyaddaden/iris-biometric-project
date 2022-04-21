@@ -1,35 +1,54 @@
 \block{Problématique}{
        { \fontsize{40}{40}\selectfont 
        
-       Avec les nombreuses fuites de données récentes des entreprises et les nombreux autres problèmes de sécurité, il est important de mettre en place des mesures de sécurité robustes. Une solution à ces problèmes est d’implémenter un système biométrique. Ces systèmes permettent d'identifier une personne en utilisant des valeurs biométriques comme l’empreinte digitale, la voix, le visage ou l’iris. Les systèmes biométriques sont très sensibles et précis. En tant qu’étudiant de premier cycle, ce projet me permet d’explorer ces systèmes et de m’initier à la recherche.\cite{ref_3}
+		Avec le développement des systèmes d'information et l'utilisation d'outils informatique, il y a de plus en plus de : \vspace{0.5em}
+		
+		\begin{itemize}
+			\item[$\rightarrow$] Fuites de données au sein des entreprises.
+			\item[$\rightarrow$] Failles et problèmes de sécurité.
+		\end{itemize}		        
+		\vspace{0.5em}
+		
+		Le méthode de sécurité classiques ne suffisent plus, il est par conséquent primordial de mettre en place des mesures de sécurité robustes. \vspace{0.5em}
        
+		Une solution à ces problèmes est d'adopter une approche biométrique. Ce type de système permet d'identifier une personne en utilisant des caractéristiques biométriques comme l'empreinte digitale, la voix, le visage ou l'iris \cite{ref_01}.       
        }
 }
 
 \block{Objectifs}{
  	{ \fontsize{40}{40}\selectfont  
-        
-	\vspace{1em}
 	\begin{itemize}
-		\item Développer un système capable d’identifier une personne en se basant sur une image de l'iris d'un oeil en utilisant des techniques d’apprentissage automatique. 
-Le système sera en mesure de prédire un résultat, afin de savoir si l'image donnée correspond à l'iris d'une personne déjà enregistrée en se basant sur les images préalablement fournies par cette même personne.
-		\item Ce modèle pourra ensuite être utilisé par une application à travers
-une API REST, permettant une identification par l'iris.
+		\item[$\checkmark$] Développer un système d'identification basé sur une image de l'iris en passant par des techniques d'apprentissage automatique. 
+
+		\item[$\checkmark$] Mettre le système à disposition à travers une \textbf{API REST} destiné aux applications Web et mobiles.
 	\end{itemize}
-        
 	}
 }	
 
 \block{Description du Système}{
  	{ \fontsize{40}{40}\selectfont 
  	
-	Le système construit est composé de plusieurs étapes.
-
-    \vspace{1em}
-    \begin{center}
-        \includegraphics[width=0.9\linewidth]{schema}
-        \captionof{figure}{Schéma du système.}
-    \end{center}
-    \vspace{1em}
+  	Afin de réaliser le système (Figure \ref{fig_01}) :
+ 	
+ 	\begin{itemize}
+ 		\item \textbf{Scikit-Image} : \url{https://scikit-image.org/} 
+ 		\item \textbf{Scikit-Learn} : \url{https://scikit-learn.org/}
+ 	\end{itemize}
+	
+	\vspace{-1.5em}
+	\section{Pré-traitement}
+	\vspace{-0.5em}
+	Les opérations appliquées (Figure \ref{fig_02}) :
+	
+	\begin{itemize}
+		\item[$\rightarrow$] \textbf{Hough Transform} \cite{ref_02} pour détecter et extraire l'iris dans les images,
+		\item[$\rightarrow$] \textbf{Daugman's rubber sheet} pour transformer l'image circulaire en une rectangulaire,
+	\end{itemize}		
+	
+	 \begin{center}
+        \includegraphics[width=1.0\linewidth]{processus}
+        \captionof{figure}{\label{fig_02}Processus de pré-traitement (a, b et c) et aperçu de \textbf{GLCM} (d).}
+    \end{center}	
+    
     }
 }

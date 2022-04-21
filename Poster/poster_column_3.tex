@@ -1,26 +1,48 @@
-\block{Évaluation}{
+\block{Méthodologie d'évaluation}{
  	{ \fontsize{40}{40}\selectfont 
  	
- 	La base de donéees utilisée pour ce projet est « MMU iris dataset ». Elle est composée d’images d’oeil pour l’entraînement de modèles de système biométrique basé sur l’iris de l’oeil. Cet ensemble de données se compose de 5 images de l’iris gauche et droit de 46 personnes.\cite{ref_2} Les tests ont été faits avec un échantillon aléatoire de 10 personnes dans la base de données.
-\\~\\
-	J'ai utilisé la validation croisée comme stratégie d’évaluation. Elle consiste à séparer les données en, par exemple, 10 sous-groupes aléatoires pour l’entraînement. Ensuite, on entraîne et évalue les données 10 fois en choisissant 9 des sous-groupes pour l’entraînement et le dernier pour l’évaluation.\cite{ref_1} J'ai utilisé un k-fold = 10.
-	
+	\begin{itemize}
+		\item[$\rightarrow$] La base de données de référence \href{https://www.kaggle.com/datasets/naureenmohammad/mmu-iris-dataset}{\textbf{MMU iris dataset}} a été téléchargée à partir de \textbf{Kaggle}.
+		
+		\item[$\rightarrow$] Caractéristiques biométriques pour $\mathbf{46}$ personnes, mais uniquement $\mathbf{10}$ sélectionnés aléatoirement ont été utilisés.
+		
+		\item[$\rightarrow$] Durant les évaluation, c'est \textit{validation croisée} qui a été adoptée. Elle permet de générer $\mathbf{K = 10}$ parties \textit{stratifiés} afin d'éviter les biais.
+	\end{itemize}	 	
 	}
 }
 
-\block{Résultats}{
+\block{Résultats préliminaires}{
  	{ \fontsize{40}{40}\selectfont 
  	
-    Deux méthodes ont été testées pour identifier celle qui donne de meilleurs résultats.
+ 	
+ 	    \begin{center}
+			\captionof{table}{\selectfont Matrice de confusion pour \textbf{GLCM}-\textbf{PCA} et $k$-\textbf{NN}. }
+			\vspace{0.3em}
+			{ \fontsize{25}{25}\selectfont  	
+				\begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
+				Sujets & \textbf{005} & \textbf{010} & \textbf{013} & \textbf{022} & \textbf{027} & \textbf{030} & \textbf{032} & 						\textbf{035} & \textbf{038} & \textbf{040} \\ \hline
+				\textbf{005} & \textbf{6} & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 3 \\ \hline
+				\textbf{010} & 0 & \textbf{9} & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+				\textbf{013} & 0 & 0 & \textbf{8} & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\ \hline
+				\textbf{022} & 0 & 1 & 0 & \textbf{8} & 1 & 0 & 0 & 0 & 0 & 0 \\ \hline
+				\textbf{027} & 0 & 1 & 0 & 2 & \textbf{6} & 0 & 1 & 0 & 0 & 0 \\ \hline
+				\textbf{030} & 2 & 0 & 1 & 0 & 0 & \textbf{4} & 1 & 0 & 0 & 2 \\ \hline
+				\textbf{032} & 0 & 1 & 0 & 0 & 1 & 0 & \textbf{7} & 0 & 0 & 1 \\ \hline
+				\textbf{035} & 0 & 1 & 0 & 0 & 1 & 1 & 0 & \textbf{7} & 0 & 0 \\ \hline
+				\textbf{038} & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & \textbf{9} & 0 \\ \hline
+				\textbf{040} & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & \textbf{7} \\ \hline
+				\end{tabular}
+			}
+		\end{center}
     
-	\vspace{1em}
     \begin{center}
-		\captionof{table}{\selectfont Comparaison des méthodes. }
-		{ \fontsize{25}{25}\selectfont 
-    	\begin{tabular}{lcc}
-        	Méthode 	& Précision \\ \hline
-            GLCM-PCA-KNN     	& 71\% \\ \hline
-            GLCM-KNN     	& 22\% \\ \hline
+		\captionof{table}{\selectfont Comparaison des deux méthodes.}
+		\vspace{0.3em}
+		{ \fontsize{30}{30}\selectfont 
+    	\begin{tabular}{l|c}
+        	Méthode 	& Taux de reconnaissance \\ \hline
+            \textbf{GLCM}-\textbf{PCA} et $k$-\textbf{NN}   & $\mathbf{71\%}$ \\ \hline
+            \textbf{GLCM} et $k$-\textbf{NN}     			& $22\%$ \\ \hline
     	\end{tabular}     		
     	}
     \end{center}
@@ -32,7 +54,11 @@
 \block{Conclusion}{
  	{ \fontsize{40}{40}\selectfont 
  	
-    Après avoir testé les deux méthodes, on a pu conclure que le méthode GLCM-PCA-KNN est meilleure pour identifier les personnes à partir de l'iris. Pour obtenir de meilleurs résultats, on aurait pu améliorer le processus de pré-traitement pour mieux détecter l'iris dans l'image et pour retirer le bruit comme les cils.
+	\begin{itemize}
+		\item[$\checkmark$] Obtention de résultats intéressants avec la représentation \textbf{GLCM}-\textbf{PCA} qui est bien meilleure que la simple \textbf{GLCM} (+ \textit{caractéristiques}). 
+
+		\item[$\checkmark$] Améliorer le processus de pré-traitement pour mieux détecter l'iris dans l'image et pour retirer le bruit comme les cils.
+	\end{itemize}
     
     }
 }
