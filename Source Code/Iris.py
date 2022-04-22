@@ -169,8 +169,8 @@ class Iris:
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
             knn.fit(X_train, y_train)
-            print(y_test)
-            print(knn.predict(X_test))
+            #print(y_test)
+            #print(knn.predict(X_test))
             #print(knn.score(X_test, y_test))
             score_sum += knn.score(X_test, y_test)
             n += 1
