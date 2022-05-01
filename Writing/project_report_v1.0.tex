@@ -32,13 +32,14 @@ La sécurité informatique est un sujet qui est très d'actualité. Avec les nom
 
 \section{Étude bibliographique}
 
-\cite{ref_07}
+La méthode proposée par S. B. Kulkarni, Raghavendrarao B. Kulkarni, U. P. Kulkarni, Ravindra S. Hegadi consiste à utiliser « Hough transform » et « Canny edge detection » pour détecter l'iris dans les images. Ensuite, la méthode de Daugman's Rubber Sheet est utilisée pour transformer les iris en image rectangulaire. Par la suite, les caractéristiques GLCM sont extraites sur l'image normalisée d'iris, puis le vecteur de caractéristiques GLCM est créé. Pour la classification, FKNN et KNN sont appliqués avec différentes méthodes de distance. Ils ont réussi à obtenir un taux de reconnaissance de 100\% avec cette méthode.\cite{ref_07}
+\\~\\
+La méthode proposée par Krishna Devi, Preeti Gupta, Diksha Grover et Anaahat Dhindsa utilise « Hough transform » et « Canny edge detection »  pour détecter l'iris dans les images. La normalisation est effectuée en convertissant les coordonnées cartésiennes en coordonnées polaires. La méthode « Compound local binary pattern » (CLBP) est utilisée pour extraire les caractéristiques des images. Ensuite, le processus de classification est fait en utilisant un réseau neuronal. Avec cette méthode, ils ont eu un taux de reconnaissance de 96\%.\cite{ref_08}
+\\~\\
+La méthode proposée par Emrullah ACAR fait la segmentation de l'iris en utilisant le programme MATLAB 2011a. La GLCM est ensuite appliquée sur quatre régions locales de l'iris pour extraire les caractéristiques. Pour la classification, la méthode KNN est appliquée. Ils ont obtenu un taux de raconnaissance de 85\% avec un k=1 du KNN.\cite{ref_09}
+\\~\\
 
-\cite{ref_08}
-
-\cite{ref_09}
-
-\cite{ref_10}
+Raul Malutan, Simina Emerich, Olimpiu Pop et Lasz16 Lefkovits propose également une méthode différente. Dans leur méthode, le processus de segmentation a été réalisé selon l'algorithme proposé par Libor Masek et la région de l'iris est déroulée en utilisant la transformation cartésienne à polaire. Ensuite, les méthodes « Histogram of Oriented Gradients » (HOG) et « Local Intensity Order Pattern » (LIOP) ont été utilisées pour extraire les caractéristiques. Pour la classification, le package libsvm Support Vector Machine avec le noyau linéaire et RBF a été utilisé. Avec HOG, ils ont obtenu un taux de reconnaissance entre 82.25\% et 100\% et, avec LIOP, entre 96.23\% et 100\%.\cite{ref_10}
 
 \section{Système biométrique basé sur l’iris de l’œil}
 
@@ -114,12 +115,14 @@ Pour ce projet, j'ai transformé chaque matrice 2D GLCM de chaque iris en un vec
 \subsection{Processus de classification}
 Le processus de classification est la dernière étape du système de reconnaissance. Il consiste à trouver le degré de similarité entre une image test et une image dans la base de données. Il permet de détecter si la personne est dans la base de données ou si c’est un imposteur.\cite{ref_01}\cite{ref_06}
 \\~\\
-Il existe de nombreuses techniques pour classifier les données. Une de ces méthodes est les k voisins les plus proches (k-NN). Elle consiste à trouver les k échantillons dont l'entrée est la plus proche d'une nouvelle entrée.
+Il existe de nombreuses techniques pour classifier les données. Une de ces méthodes est les k voisins les plus proches (k-NN). Elle consiste à trouver les k échantillons dont l'entrée est la plus proche d'une nouvelle entrée basé sur la distance. Il existe plusieurs distances pouvant être utilisées. La distance Manhattan entre deux points est la somme des différences absolues de leurs coordonnées cartésiennes. Par ailleurs, la distance euclidienne est une mesure de la vraie distance en ligne droite entre deux points.\cite{ref_11}
+\\~\\
+J'ai utilisé la fonction « KNeighborsClassifier » de « scikit-learn » avec un k = 2 et la distance Manhattan.
 
 \section{Méthodologie d’évaluation}
 La technique utilisée pour l'évaluation est la validation croisée. La validation croisée consiste à séparer les données en, par exemple, 10 parties stratifiés, afin d’éviter les biais. Ensuite, on entraîne et évalue les données 10 fois en choisissant 9 des sous-groupes pour l'entraînement et le dernier pour l'évaluation.\cite{ref_03}
 \ \\~\\
-La base de données de référence « MMU iris dataset » et un K = 10 pour la validation croisée ont été utilisés pour l'évaluation.
+La base de données de référence « MMU iris dataset » et un K = 10 de la fonction « StratifiedKFold » de « scikit-learn » pour la validation croisée ont été utilisés pour l'évaluation.
 
 \section{Résultats préliminaires}
 		\begin{center}
